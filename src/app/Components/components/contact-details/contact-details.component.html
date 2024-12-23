@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'dark': isDarkMode }" class="h-screen w-full flex flex-col bg-white dark:bg-gray-800">
+<div [ngClass]="{ 'dark': isDarkMode }" class="min-h-screen w-full flex flex-col bg-white dark:bg-gray-800">
   <!-- Header with User's Name -->
   <div class="flex items-center mb-8 p-8 bg-blue-500 dark:bg-blue-700 text-white">
     <div class="flex flex-col ml-6">
@@ -98,8 +98,9 @@
 
           <!-- Submit Button -->
           <div class="form-group flex items-center justify-between mt-6">
-            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-md shadow hover:bg-green-700" [disabled]="contactForm.invalid">Save</button>
             <button type="button" class="px-6 py-3 bg-red-600 text-white rounded-md shadow hover:bg-red-700" (click)="deleteContact(contact)">Delete</button>
+            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-md shadow hover:bg-green-700" [disabled]="contactForm.invalid">Save</button>
+
           </div>
         </div>
       </form>

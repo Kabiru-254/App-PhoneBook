@@ -37,9 +37,8 @@ export class ContactListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // if (localStorage != undefined){
-    //   this.loadViewModePreference();
-    // }
+
+    this.loadViewModePreference();
     this.loadContacts();
   }
 

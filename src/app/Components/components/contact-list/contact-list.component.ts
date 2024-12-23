@@ -203,6 +203,8 @@ export class ContactListComponent implements OnInit {
 
   bulkDelete() {
     this.contactService.deleteContacts(this.selectedContacts);
+    this.selectedContacts = [];
+    this.toggleCheckboxVisibility();
     this.loadContacts();
     this.notificationService.showSuccess('Contacts deleted successfully.');
   }

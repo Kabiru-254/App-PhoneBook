@@ -1,59 +1,75 @@
-# PhonebookApp
+# Phonebook Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+## Features
 
-## Development server
+The Phonebook Application is a responsive, feature-rich Angular application that allows users to manage their contact information effectively. Key features include:
 
-To start a local development server, run:
+- **Contact Management:**
+  - Add, edit, and soft delete single or multiple contacts.
+  - View detailed contact information.
+  - Filter contacts by favorites, non-deleted, groups, or the top 10 most recent.
+  - Group category filtering.
+  - Arranged Alphabetically by default
 
-```bash
-ng serve
-```
+- **Responsive Design:**
+  - Optimized for various screen sizes, with buttons stacking vertically on smaller screens.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Contact Details Page:**
+  - Displays detailed fields such as first name, last name, email, phone, image URL, address, group category, added date, and last viewed date.
+  - Allows inline editing.
 
-## Code scaffolding
+- **Favorites Toggle:**
+  - Quickly mark contacts as favorites for easy access.
+ 
+  -**Grid/List View Toggle:**
+  - Quickly switch between grid view and list view.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Confirmation Dialogs:**
+  - Displays confirmations for updates and deletions using a notification service.
 
-```bash
-ng generate component component-name
-```
+## Project Setup
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Prerequisites
+Ensure you have the following installed on your system:
+- **Node.js:** Version 18 or later
+- **Angular CLI:** Version 19 or later
 
-```bash
-ng generate --help
-```
+### Installation Steps
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd phonebook-application
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Building
+## Running the Application
 
-To build the project run:
+### Development Server
+To run the app locally:
+1. Start the development server:
+   ```bash
+   ng serve
+   ```
+2. Open your browser and navigate to:
+   ```
+   http://localhost:4200
+   ```
 
-```bash
-ng build
-```
+The app will automatically reload if you make changes to any of the source files.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Project Structure
+- **src/app:** Contains the core application files, including components, services, and mock data.
+- **assets:** Stores static files such as images and styles.
+- **environments:** Configuration for development and production environments.
 
-## Running unit tests
+## Notes
+- Inline form validation ensures all required fields (e.g., `firstName`, `lastName`, `email`, `phone`) are filled.
+- Contact data is managed using a service that handles filtering and CRUD operations.
+- Styling is adjusted for better color contrast, ensuring accessibility.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

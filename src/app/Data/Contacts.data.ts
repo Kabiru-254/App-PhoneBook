@@ -251,7 +251,7 @@ export const MOCK_CONTACTS: Contact[] = [
     physicalAddress: 'Mombasa, Moi Avenue',
     groupCategory: 'Friends',
     addedDate: new Date('2024-12-25'),
-    lastViewedDate: new Date('2024-12-26')
+    lastViewedDate: new Date('2024-12-12')
   },
   {
     id: '19',
@@ -265,7 +265,7 @@ export const MOCK_CONTACTS: Contact[] = [
     physicalAddress: 'Kisumu, Kisumu Bay',
     groupCategory: 'Family',
     addedDate: new Date('2024-12-28'),
-    lastViewedDate: new Date('2024-12-30')
+    lastViewedDate: new Date('2024-12-10')
   },
   {
     id: '20',
@@ -279,6 +279,6 @@ export const MOCK_CONTACTS: Contact[] = [
     physicalAddress: 'Eldoret, Eldoret Town',
     groupCategory: 'Work',
     addedDate: new Date('2025-01-01'),
-    lastViewedDate: new Date('2025-01-05')
+    lastViewedDate: new Date('2024-11-05')
   }
 ];

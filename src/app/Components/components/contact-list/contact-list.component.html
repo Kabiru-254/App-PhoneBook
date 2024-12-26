@@ -1,36 +1,40 @@
-<div class="flex justify-between items-center py-4 px-6 "
-     [ngClass]="darkMode ? 'bg-gray-800 border-b-2 border-gray-600' : 'bg-white border-b-2 border-gray-300'">
+<div class="flex justify-between items-center py-4 px-6"
+     [ngClass]="darkMode ? 'bg-gray-800 border-b-2 border-amber-50' : 'bg-white border-b-2 border-gray-800'">
   <!-- Header with dynamic color change based on dark mode -->
-  <h2 class="text-2xl font-semibold" [ngClass]="darkMode ? 'text-white' : 'text-black'">
+  <h2 class="text-2xl font-semibold" [ngClass]="darkMode ? 'text-amber-50' : 'text-gray-800'">
     PhoneBook
   </h2>
 
   <!-- Dark Mode Toggle Switch -->
   <label class="flex items-center cursor-pointer">
-    <!-- Sun Icon (Light Mode) -->
-    <span *ngIf="!darkMode" class="text-yellow-500 mr-2">
-      <i class="fas fa-sun"></i>
-    </span>
+    <!-- Icons and Toggle Container -->
+    <div class="relative flex items-center">
+      <!-- Sun Icon (Light Mode) -->
+      <i class="fas fa-sun text-yellow-500 mr-2 transition-opacity duration-300"
+         [ngClass]="{ 'opacity-0': darkMode }"></i>
 
-    <!-- Toggle Switch -->
-    <div class="relative">
-      <input
-        type="checkbox"
-        id="darkModeToggle"
-        class="hidden"
-        (change)="toggleTheme()"
-        [checked]="darkMode"
-      />
-      <div class="block w-10 h-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-      <div class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform" [ngClass]="{'translate-x-4': darkMode}"></div>
+      <!-- Toggle Switch -->
+      <div class="relative" title="Toggle between light mode and dark mode">
+        <input
+          type="checkbox"
+          id="darkModeToggle"
+          class="hidden"
+          (change)="toggleTheme()"
+          [checked]="darkMode"
+        />
+        <div class="block w-10 h-6 bg-gray-300 rounded-full"></div>
+        <div
+          class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform"
+          [ngClass]="{ 'translate-x-4': darkMode }"></div>
+      </div>
+
+      <!-- Moon Icon (Dark Mode) -->
+      <i class="fas fa-moon text-blue-400 ml-2 transition-opacity duration-300"
+         [ngClass]="{ 'opacity-0': !darkMode }"></i>
     </div>
-
-    <!-- Moon Icon (Dark Mode) -->
-    <span *ngIf="darkMode" class="text-blue-400 ml-2">
-      <i class="fas fa-moon"></i>
-    </span>
   </label>
 </div>
+
 
 
 
@@ -50,8 +54,12 @@
     <!-- View Mode Toggle -->
     <div class="flex items-center ml-4">
       <!-- View Mode Switch -->
-      <label class="flex items-center cursor-pointer">
-        <span *ngIf="viewMode === 'list'" class="text-blue-500 mr-2">List View</span>
+      <label class="flex items-center cursor-pointer" title="Toggle between list and grid view">
+        <!-- List View Icon -->
+        <i class="fas fa-list text-blue-500 mr-2 transition-opacity duration-300"
+           [ngClass]="{ 'opacity-0': viewMode === 'grid' }"></i>
+
+        <!-- Toggle Switch -->
         <div class="relative">
           <input
             type="checkbox"
@@ -61,19 +69,25 @@
             [checked]="viewMode === 'grid'"
           />
           <div class="block w-10 h-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-          <div class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform" [ngClass]="{'translate-x-4': viewMode === 'grid'}"></div>
+          <div class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform"
+               [ngClass]="{ 'translate-x-4': viewMode === 'grid' }"></div>
         </div>
-        <span *ngIf="viewMode === 'grid'" class="text-blue-500 ml-2">Grid View</span>
+
+        <!-- Grid View Icon -->
+        <i class="fas fa-th text-blue-500 ml-2 transition-opacity duration-300"
+           [ngClass]="{ 'opacity-0': viewMode === 'list' }"></i>
       </label>
     </div>
+
 
   </div>
 
   <div class="flex flex-wrap justify-between items-center mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+
     <!-- Favorite Toggle -->
     <div class="flex justify-start items-center mb-4">
       <button
-        class="px-4 py-2 mx-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 flex items-center"
+        class="px-4 py-2 mx-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 flex items-center"
         (click)="toggleFavoriteFilter()">
         <i class="fa" [ngClass]="showFavoritesOnly ? 'fa-star' : 'fa-star-o'"></i>
         <span class="ml-2">{{ showFavoritesOnly ? 'Show All' : 'Show Favorites' }}</span>
@@ -87,7 +101,7 @@
         id="groupCategory"
         [(ngModel)]="selectedGroupCategory"
         (change)="filterByGroupCategory()"
-        class="px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500">
+        class="px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 ease-in-out">
         <option value="">All</option>
         <option value="Family">Family</option>
         <option value="Work">Work</option>
@@ -99,7 +113,7 @@
     <!-- Recent Contacts Toggle -->
     <div class="flex justify-start items-center mb-4">
       <button
-        class="px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 flex items-center"
+        class="px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
         (click)="toggleRecentContactsFilter()">
         <span class="ml-2">{{ showRecentContactsOnly ? 'Show All Contacts' : 'Show Recent Contacts' }}</span>
       </button>
@@ -116,7 +130,7 @@
     <!-- Select Multiple Button -->
     <div class="flex justify-start items-center mb-4">
       <button
-        class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
+        class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         (click)="toggleCheckboxVisibility()">
         {{ showCheckboxes ? 'Hide Selection' : 'Select Multiple' }}
       </button>
@@ -124,7 +138,7 @@
       <!-- Select All Button (only visible when checkboxes are shown) -->
       <button
         *ngIf="showCheckboxes"
-        class="ml-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600"
+        class="ml-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         (click)="selectAllContacts()">
         Select All
       </button>
@@ -134,15 +148,17 @@
 
 
 
+
   <!-- Contact List -->
   <div [ngClass]="viewMode === 'list' ? 'block' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'">
-    <div
+    <button
       *ngFor="let contact of filteredContacts"
-      class="p-4 bg-white shadow-lg rounded-lg flex justify-between items-center dark:bg-gray-700 "
+      class="p-4 bg-white shadow-lg rounded-lg flex justify-between items-center dark:bg-gray-700 focus:outline-none w-full"
       [ngStyle]="{
       'max-width': viewMode === 'list' ? '100%' : '100%',
       'margin': viewMode === 'list' ? '10px' : '0'
     }"
+      (click)="viewDetails(contact)"
     >
       <input
         *ngIf="showCheckboxes"
@@ -152,8 +168,8 @@
         (change)="toggleContactSelection(contact.id)"
       />
 
-      <!-- Contact Info -->
-      <div>
+      <!-- Contact Info with Left Alignment -->
+      <div class="text-left">
         <h3 class="text-lg font-bold dark:text-white">{{ contact.firstName }} {{ contact.lastName }}</h3>
         <p class="text-sm text-gray-600 dark:text-gray-300">{{ contact.email }}</p>
         <p class="text-sm text-gray-600 dark:text-gray-300">{{ contact.phone }}</p>
@@ -174,8 +190,9 @@
           <i class="fas fa-trash"></i>
         </button>
       </div>
-    </div>
+    </button>
   </div>
+
 
   <!-- Bulk Actions -->
   <div *ngIf="selectedContacts.length > 0" class="fixed bottom-4 right-4">

@@ -1,10 +1,18 @@
-<div [ngClass]="{ 'dark': isDarkMode }" class="min-h-screen w-full flex flex-col bg-white dark:bg-gray-800">
+<div class="min-h-screen  w-full flex flex-col bg-white dark:bg-gray-800">
   <!-- Header with User's Name -->
-  <div class="flex items-center mb-8 p-8 bg-blue-500 dark:bg-blue-700 text-white">
+  <div
+    class="flex items-center mb-8 p-8 bg-gray-100 dark:bg-gray-900 border-b-4 border-gray-800 dark:border-amber-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
     <div class="flex flex-col ml-6">
-      <h2 class="text-3xl font-semibold">Hello, {{ contact.firstName }}</h2>
+      <h2 class="text-4xl font-extrabold text-gray-800 dark:text-amber-50 font-serif">
+        Welcome to {{ contact.firstName }}'s Profile
+      </h2>
+      <p class="text-md text-gray-600 dark:text-gray-300 mt-2 font-sans">
+        Here you can view and update {{contact.firstName}}'s contact information, keep it fresh, and stay connected!
+      </p>
     </div>
   </div>
+
+
 
   <!-- Contact Info Section -->
   <div class="flex flex-col md:flex-row justify-between items-start flex-grow p-8 space-y-8 md:space-y-0">

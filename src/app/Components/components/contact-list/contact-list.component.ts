@@ -39,7 +39,9 @@ export class ContactListComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadViewModePreference();
+    this.initializeTheme();
     this.loadContacts();
+
   }
 
   loadContacts() {
@@ -53,20 +55,17 @@ export class ContactListComponent implements OnInit {
     return this.filteredContacts;
   }
 
-  toggleTheme() {
-    // localStorage.removeItem('darkMode');
-    // this.darkMode = !this.darkMode;
-    // if (this.darkMode) {
-    //   document.documentElement.classList.add('dark');
-    // } else {
-    //   document.documentElement.classList.remove('dark');
-    // }
-    // console.log(`We are in dark mode:: ${this.darkMode}`);
-    // localStorage.setItem('darkMode', JSON.stringify(this.darkMode));
-
-    this.darkModeService.toggleMode();
-    this.darkModeService.setMode(this.darkModeService.getCurrentMode())
+  initializeTheme(): void {
+    const mode = this.darkModeService.getCurrentMode(); // Fetch mode from service
+    this.darkMode = mode === 'dark'; // Set darkMode based on fetched mode
+    document.documentElement.classList.toggle('dark', this.darkMode); // Apply to document root
   }
+
+  toggleTheme(): void {
+    this.darkModeService.toggleMode();
+    this.initializeTheme(); // Reapply theme changes after toggling
+  }
+
 
   toggleViewMode() {
     this.viewMode = this.viewMode === 'list' ? 'grid' : 'list';
@@ -134,6 +133,9 @@ export class ContactListComponent implements OnInit {
 
   toggleFavorite(contact: any) {
     contact.isFavorite = !contact.isFavorite;
+    this.filteredContacts = this.showFavoritesOnly
+      ? this.contacts.filter((contact) => contact.isFavorite)
+      : [...this.contacts];
     this.notificationService.showSuccess(
       `${contact.firstName} ${contact.lastName} ${
         contact.isFavorite ? 'added to' : 'removed from'

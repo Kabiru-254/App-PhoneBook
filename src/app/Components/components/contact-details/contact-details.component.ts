@@ -5,7 +5,6 @@ import { NotificationsService } from '../../../Services/notifications.service';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Contact} from '../../../Models/ContactModel';
 import {CommonModule} from '@angular/common';
-import {DarkModeService} from '../../../Services/dark-mode.service';
 
 @Component({
   selector: 'app-contact-details',
@@ -23,7 +22,7 @@ export class ContactDetailsComponent implements OnInit{
   contact!: Contact;
   contactId!: string | null;
   contactForm!: FormGroup;
-  isDarkMode: boolean = false;
+  isDarkMode!: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,14 +30,9 @@ export class ContactDetailsComponent implements OnInit{
     private notificationService: NotificationsService,
     private fb: FormBuilder,
     private router: Router,
-    private darkModeService: DarkModeService
   ) {
   }
   ngOnInit(): void {
-
-
-    this.isDarkMode = this.darkModeService.getCurrentMode() == "darkMode"
-
     this.createForm();
     this.contactId = this.route.snapshot.paramMap.get('id');
     this.fetchContactDetails();
@@ -50,10 +44,12 @@ export class ContactDetailsComponent implements OnInit{
       if (contact) {
         this.contact = contact;
         this.populateForm();
+        this.contact.lastViewedDate = new Date()
       } else {
         this.notificationService.showError('Contact not found!');
       }
     });
+
   }
 
 

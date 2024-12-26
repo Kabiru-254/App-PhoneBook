@@ -4,8 +4,9 @@ import {ContactListComponent} from './Components/components/contact-list/contact
 import {ExportImportComponent} from './Components/export-import/export-import.component';
 
 export const routes: Routes = [
-  { path: '', component: ContactListComponent },
+  { path: '', redirectTo: '/contact-list', pathMatch: 'full' },
   { path: 'contact-list', component: ContactListComponent },
   { path: 'importExportContacts', component: ExportImportComponent },
   { path: 'contact-details/:id', component: ContactDetailsComponent },
+  { path: '**', redirectTo: '/contact-list' },
 ];

@@ -119,13 +119,13 @@
       </button>
     </div>
 
-<!--    <div class="flex justify-start items-center mb-4">-->
-<!--      <button-->
-<!--        class="px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 flex items-center"-->
-<!--        (click)="openImportExportPage()">-->
-<!--        <span class="ml-2">Export/Import Contacts</span>-->
-<!--      </button>-->
-<!--    </div>-->
+    <div class="flex justify-start items-center mb-4">
+      <button
+        class="px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 flex items-center"
+        (click)="openImportExportPage()">
+        <span class="ml-2">Export/Import Contacts</span>
+      </button>
+    </div>
 
     <!-- Select Multiple Button -->
     <div class="flex justify-start items-center mb-4">
@@ -152,7 +152,7 @@
   <!-- Contact List -->
   <div [ngClass]="viewMode === 'list' ? 'block' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'">
     <!-- Iterate through filteredContacts with *ngFor -->
-    <div *ngFor="let contact of filteredContacts">
+    <div *ngFor="let contact of filteredContacts" [ngClass]="viewMode === 'list' ? 'mb-4' : ''">
       <!-- Card Wrapper -->
       <div class="p-4 bg-white shadow-lg rounded-lg flex justify-between items-center dark:bg-gray-700 focus:outline-none w-full">
 

@@ -1,90 +1,333 @@
-<div class="mb-6 mt-9 w-full flex justify-center">
-  <input
-    type="file"
-    accept=".csv"
-    (change)="onFileChange($event)"
-    class="hidden"
-    id="fileInput"
-  />
-  <button
-    class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
-    (click)="fileInput.nativeElement.click()"
-  >
-    Upload CSV File
-  </button>
-</div>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<!-- Import Instructions -->
-<div class="mt-6 text-center text-gray-700 dark:text-gray-300">
-  <p class="font-medium">How to Import Contacts:</p>
-  <ul class="list-inside list-disc">
-    <li>Click on the "Upload CSV File" button and select your CSV file.</li>
-    <li>The CSV file should follow the format shown below.</li>
-  </ul>
 
-  <div class="mt-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-    <p class="font-semibold">Sample CSV Format:</p>
-    <pre class="text-sm text-gray-700 dark:text-gray-300">
-First Name, Last Name, Email, Phone
-John, Doe, john.doe&#64;.com, 123-456-7890
-Jane, Smith, jane.smith&#64;.com, 987-654-3210
-    </pre>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+  <div class="max-w-5xl mx-auto p-4">
+    <h1 class="text-2xl font-bold text-center mb-6">Import / Export Contacts</h1>
+    <!-- Dark Mode Toggle Switch -->
+    <label class="flex items-center justify-end cursor-pointer">
+      <!-- Icons and Toggle Container -->
+      <div class="relative flex items-center">
+        <!-- Sun Icon (Light Mode) -->
+        <i class="fas fa-sun text-yellow-500 mr-2 transition-opacity duration-300"
+           [ngClass]="{ 'opacity-0': darkMode }"></i>
+
+        <!-- Toggle Switch -->
+        <div class="relative" title="Toggle between light mode and dark mode">
+          <input
+            type="checkbox"
+            id="darkModeToggle"
+            class="hidden"
+            (change)="toggleTheme()"
+            [checked]="darkMode"
+          />
+          <div class="block w-10 h-6 bg-gray-300 rounded-full"></div>
+          <div
+            class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform"
+            [ngClass]="{ 'translate-x-4': darkMode }"></div>
+        </div>
+
+        <!-- Moon Icon (Dark Mode) -->
+        <i class="fas fa-moon text-blue-400 ml-2 transition-opacity duration-300"
+           [ngClass]="{ 'opacity-0': !darkMode }"></i>
+      </div>
+    </label>
+
+    <!-- Tabs -->
+    <div class="border-b border-gray-300 dark:border-gray-700 mb-6">
+      <ul class="flex justify-center">
+        <li>
+          <button
+            (click)="activeTab = 'import'"
+            [ngClass]="{'border-b-2 border-blue-500 dark:border-blue-400 text-blue-500': activeTab === 'import'}"
+            class="px-3 py-1 text-sm font-medium hover:text-blue-500 dark:hover:text-blue-400"
+          >
+            Import Contacts
+          </button>
+        </li>
+        <li>
+          <button
+            (click)="activeTab = 'export'"
+            [ngClass]="{'border-b-2 border-blue-500 dark:border-blue-400 text-blue-500': activeTab === 'export'}"
+            class="px-3 py-1 text-sm font-medium hover:text-blue-500 dark:hover:text-blue-400"
+          >
+            Export Contacts
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tab Content -->
+    <div>
+      <!-- Import Tab -->
+      <div *ngIf="activeTab === 'import'">
+        <!-- Step 1 -->
+        <div *ngIf="currentStep === 1" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Step 1: Upload CSV</h3>
+            <button
+              (click)="downloadTemplate()"
+              class="px-2 py-0.5 text-sm bg-yellow-500 text-white shadow hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              Download CSV Template
+            </button>
+
+          </div>
+
+          <p class="mb-2">Select a CSV file for upload. Ensure the file matches the format below:</p>
+
+          <!-- CSV Format Details -->
+          <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg mb-4">
+            <thead class="bg-gray-100 dark:bg-gray-700">
+            <tr>
+              <th class="px-4 py-2">Field</th>
+              <th class="px-4 py-2">Description</th>
+              <th class="px-4 py-2">Example</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="px-4 py-2">First Name</td>
+              <td class="px-4 py-2">Required. User's first name.</td>
+              <td class="px-4 py-2">John</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Last Name</td>
+              <td class="px-4 py-2">Required. User's last name.</td>
+              <td class="px-4 py-2">Doe</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Email</td>
+              <td class="px-4 py-2">Required. Valid email address.</td>
+              <td class="px-4 py-2">john.doe&#64;example.com</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Phone</td>
+              <td class="px-4 py-2">Required. 10-digit phone number.</td>
+              <td class="px-4 py-2">1234567890</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <!-- File Input -->
+          <div class="flex items-center gap-4">
+            <input
+              type="file"
+              accept=".csv"
+              class="block text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer focus:outline-none"
+              (change)="handleFileUpload($event)"
+              #fileInput
+            />
+            <span *ngIf="fileName" class="text-sm text-green-600 dark:text-green-400">Uploaded: {{ fileName }}</span>
+          </div>
+
+          <!-- Error Message -->
+          <p *ngIf="uploadError" class="text-red-500 mt-2">{{ uploadError }}</p>
+
+          <!-- Proceed Button -->
+          <button
+            (click)="proceedToStep(2)"
+            class="px-2 py-0.5 text-sm mt-4 bg-blue-500 text-white  shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Proceed to Step 2
+          </button>
+        </div>
+
+
+        <!-- Step 2 -->
+        <div *ngIf="currentStep === 2" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-2">Step 2: Validate Data</h3>
+          <p class="mb-4">
+            Review and validate your uploaded data below:
+            <strong>({{ validContactsCount }}) valid contacts out of ({{ totalContactsCount }})</strong>
+          </p>
+
+          <!-- Data Table -->
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-4">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
+            <tr>
+              <th class="px-6 py-3">First Name</th>
+              <th class="px-6 py-3">Last Name</th>
+              <th class="px-6 py-3">Email</th>
+              <th class="px-6 py-3">Phone</th>
+              <th class="px-6 py-3">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              *ngFor="let contact of validContacts"
+              [ngClass]="{'bg-red-100 dark:bg-red-100': contact.error}"
+            >
+              <td class="px-6 py-3">{{ contact.firstName }}</td>
+              <td class="px-6 py-3">{{ contact.lastName }}</td>
+              <td class="px-6 py-3">{{ contact.email }}</td>
+              <td class="px-6 py-3">{{ contact.phone }}</td>
+              <td class="px-6 py-3">
+                <span *ngIf="contact.error" class="text-red-500">{{ contact.error }}</span>
+                <span *ngIf="!contact.error" class="text-green-500">Valid</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <!-- Buttons -->
+          <div class="flex justify-between">
+            <!-- Return to Step 1 -->
+            <button
+              (click)="proceedToStep(1)"
+              class="px-3 py-1 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              Return to Step 1
+            </button>
+
+
+            <div *ngIf="validContactsCount > 0">
+              <button
+                (click)="proceedToStep(3)"
+                [disabled]="validContacts.length === 0"
+                class="px-3 py-1 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                Import ({{ validContactsCount }}) Contacts
+              </button>
+            </div>
+            <div *ngIf="validContactsCount == 0">
+              <p>No valid contacts to import</p>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Export Tab -->
+      <div *ngIf="activeTab === 'export'">
+
+        <!-- View Mode Toggle -->
+        <div class="flex items-center ml-4 justify-end">
+          <!-- View Mode Switch -->
+          <label class="flex items-center cursor-pointer" title="Toggle between list and grid view">
+            <!-- List View Icon -->
+            <i class="fas fa-list text-blue-500 mr-2 transition-opacity duration-300"
+               [ngClass]="{ 'opacity-0': viewMode === 'grid' }"></i>
+
+            <!-- Toggle Switch -->
+            <div class="relative">
+              <input
+                type="checkbox"
+                id="viewModeToggle"
+                class="hidden"
+                (change)="toggleViewMode()"
+                [checked]="viewMode === 'grid'"
+              />
+              <div class="block w-10 h-6 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+              <div class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition transform"
+                   [ngClass]="{ 'translate-x-4': viewMode === 'grid' }"></div>
+            </div>
+
+            <!-- Grid View Icon -->
+            <i class="fas fa-th text-blue-500 ml-2 transition-opacity duration-300"
+               [ngClass]="{ 'opacity-0': viewMode === 'list' }"></i>
+          </label>
+        </div>
+
+        <mat-accordion class="w-full">
+          <mat-expansion-panel [expanded]="false" class="bg-white dark:bg-gray-800 shadow-md" style="margin-bottom: 40px; margin-top: 40px; border-radius: 0">
+            <mat-expansion-panel-header class="flex items-center justify-between">
+              <span class="text-gray-800 dark:text-white font-medium">Filter before exporting</span>
+            </mat-expansion-panel-header>
+
+            <div class="p-4 space-y-4">
+              <!-- Search Bar -->
+              <div>
+                <input
+                  type="text"
+                  class="w-full px-4 py-2 border shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+                  placeholder="Search contacts by name, email, or phone"
+                  [(ngModel)]="searchQuery"
+                  (input)="onSearch()"
+                />
+              </div>
+
+
+              <!-- Favorite Filter -->
+              <div>
+                <button
+                  class="w-full px-4 py-2 bg-blue-500 text-white shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 flex items-center justify-center"
+                  (click)="toggleFavoriteFilter()">
+                  <i class="fa" [ngClass]="showFavoritesOnly ? 'fa-star' : 'fa-star-o'"></i>
+                  <span class="ml-2">{{ showFavoritesOnly ? 'Select All Contacts' : 'Select Favorites' }}</span>
+                </button>
+              </div>
+
+              <!-- Recent Contacts Filter -->
+              <div>
+                <button
+                  class="w-full px-4 py-2 bg-blue-500 text-white shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
+                  (click)="toggleRecentContactsFilter()">
+                  <span class="ml-2">{{ showRecentContactsOnly ? 'Select All Contacts' : 'Select Recent Contacts' }}</span>
+                </button>
+              </div>
+
+              <!-- Group Filter Dropdown -->
+              <div class="flex items-center">
+<!--                <label for="groupCategory" class="mr-2 text-gray-700 dark:text-white">Filter By Group:</label>-->
+                <select
+                  id="groupCategory"
+                  [(ngModel)]="selectedGroupCategory"
+                  (change)="filterByGroupCategory()"
+                  class="px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full">
+                  <option value="">All</option>
+                  <option value="Family">Family</option>
+                  <option value="Work">Work</option>
+                  <option value="Friends">Friends</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+        <div class="flex items-center ml-4 justify-end mb-6">
+          <button
+            class="px-2 py-1.5 mr-4 bg-green-500 text-white  shadow hover:bg-green-600 focus:outline-none"
+            (click)="exportAsExcel()"
+          >
+            Export to Excel
+          </button>
+
+          <button
+            class="px-2 py-1.5 bg-green-500 text-white shadow hover:bg-green-600 focus:outline-none"
+            (click)="exportAsCsv()"
+          >
+            Export to CSV
+          </button>
+        </div>
+
+
+        <div>
+          <!-- Contact List -->
+          <div [ngClass]="viewMode === 'list' ? 'block' : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'">
+            <!-- Iterate through filteredContacts with *ngFor -->
+            <div *ngFor="let contact of filteredContacts" [ngClass]="viewMode === 'list' ? 'mb-4' : ''">
+              <!-- Card Wrapper -->
+              <div class="p-4 bg-white shadow-lg rounded-lg flex justify-between items-center dark:bg-gray-700 focus:outline-none w-full">
+
+                <div class="flex flex-1 items-center" style="cursor: grab">
+                  <!-- Contact Info with Left Alignment -->
+                  <div class="text-left flex-1">
+                    <h3 class="text-lg font-bold dark:text-white">{{ contact.firstName }} {{ contact.lastName }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ contact.email }}</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ contact.phone }}</p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-
-<!-- Messages -->
-<div *ngIf="errorMessage" class="text-red-500 text-center mt-4">
-  {{ errorMessage }}
-</div>
-<div *ngIf="successMessage" class="text-green-500 text-center mt-4">
-  {{ successMessage }}
-</div>
-
-<!-- Import Section -->
-<div class="mt-6">
-  <h3 class="text-xl font-semibold text-center text-gray-800 dark:text-gray-200">Import Contacts</h3>
-  <div class="flex justify-center mt-4 space-x-4">
-    <button
-      (click)="importContacts()"
-      class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
-    >
-      Import Contacts
-    </button>
-  </div>
-</div>
-
-<!-- Export Section -->
-<div class="mt-6">
-  <h3 class="text-xl font-semibold text-center text-gray-800 dark:text-gray-200">Export Contacts</h3>
-  <div class="flex justify-center mt-4 space-x-4">
-    <button
-      (click)="exportContacts()"
-      class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
-    >
-      Export Contacts
-    </button>
-  </div>
-</div>
-
-<!-- Display Imported Contacts -->
-<div *ngIf="contacts.length > 0" class="mt-6">
-  <h3 class="text-lg font-semibold text-center text-gray-800 dark:text-gray-200">Imported Contacts</h3>
-  <table class="min-w-full mt-4 table-auto border-collapse">
-    <thead>
-    <tr>
-      <th class="px-4 py-2 border-b text-gray-800 dark:text-gray-200">First Name</th>
-      <th class="px-4 py-2 border-b text-gray-800 dark:text-gray-200">Last Name</th>
-      <th class="px-4 py-2 border-b text-gray-800 dark:text-gray-200">Email</th>
-      <th class="px-4 py-2 border-b text-gray-800 dark:text-gray-200">Phone</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let contact of contacts">
-      <td class="px-4 py-2 border-b text-gray-700 dark:text-gray-300">{{ contact.firstName }}</td>
-      <td class="px-4 py-2 border-b text-gray-700 dark:text-gray-300">{{ contact.lastName }}</td>
-      <td class="px-4 py-2 border-b text-gray-700 dark:text-gray-300">{{ contact.email }}</td>
-      <td class="px-4 py-2 border-b text-gray-700 dark:text-gray-300">{{ contact.phone }}</td>
-    </tr>
-    </tbody>
-  </table>
 </div>

@@ -146,7 +146,7 @@ export class ContactListComponent implements OnInit {
   toggleFavoriteFilter() {
     this.showFavoritesOnly = !this.showFavoritesOnly;
     this.filteredContacts = this.showFavoritesOnly
-      ? this.contacts.filter((contact) => contact.isFavorite)
+      ? this.filteredContacts.filter((contact) => contact.isFavorite)
       : [...this.contacts];
   }
 

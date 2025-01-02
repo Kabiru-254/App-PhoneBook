@@ -82,26 +82,26 @@
 
   </div>
 
-  <div class="flex flex-wrap justify-between items-center mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+  <div class="flex flex-wrap justify-between items-center mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full">
 
     <!-- Favorite Toggle -->
-    <div class="flex justify-start items-center mb-4">
+    <div class="flex justify-start items-center mb-4 w-full sm:w-auto">
       <button
-        class="px-4 py-2 mx-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 flex items-center"
-        (click)="toggleFavoriteFilter()">
-        <i class="fa" [ngClass]="showFavoritesOnly ? 'fa-star' : 'fa-star-o'"></i>
+        (click)="toggleFavoriteFilter()"
+        class="w-full px-4 py-2 mx-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 flex items-center justify-center">
+        <i class="fa" [ngClass]="showFavoritesOnly ? 'fa-circle' : 'fa-star'"></i>
         <span class="ml-2">{{ showFavoritesOnly ? 'Show All' : 'Show Favorites' }}</span>
       </button>
     </div>
 
     <!-- Group Category Dropdown -->
-    <div class="flex justify-start items-center mb-4">
-      <label for="groupCategory" class="mr-2 text-gray-700 dark:text-white">Filter By Group Category:</label>
+    <div class="flex justify-start items-center mb-4 w-full sm:w-auto">
+      <label for="groupCategory" class="mr-2 text-gray-700 dark:text-white hidden md:block">Filter By Group Category:</label>
       <select
         id="groupCategory"
         [(ngModel)]="selectedGroupCategory"
         (change)="filterByGroupCategory()"
-        class="px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 ease-in-out">
+        class="w-full sm:w-auto px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 ease-in-out">
         <option value="">All</option>
         <option value="Family">Family</option>
         <option value="Work">Work</option>
@@ -111,26 +111,27 @@
     </div>
 
     <!-- Recent Contacts Toggle -->
-    <div class="flex justify-start items-center mb-4">
+    <div class="flex justify-start items-center mb-4 w-full sm:w-auto">
       <button
-        class="px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
-        (click)="toggleRecentContactsFilter()">
+        (click)="toggleRecentContactsFilter()"
+        class="w-full px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center">
         <span class="ml-2">{{ showRecentContactsOnly ? 'Show All Contacts' : 'Show Recent Contacts' }}</span>
       </button>
     </div>
 
-    <div class="flex justify-start items-center mb-4">
+    <!-- Export/Import Contacts Button -->
+    <div class="flex justify-start items-center mb-4 w-full sm:w-auto">
       <button
-        class="px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 flex items-center"
-        (click)="openImportExportPage()">
+        (click)="openImportExportPage()"
+        class="w-full  px-4 py-2 mx-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 flex items-center justify-center">
         <span class="ml-2">Export/Import Contacts</span>
       </button>
     </div>
 
     <!-- Select Multiple Button -->
-    <div class="flex justify-start items-center mb-4">
+    <div class="flex justify-start items-center mb-4 w-full sm:w-auto">
       <button
-        class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
         (click)="toggleCheckboxVisibility()">
         {{ showCheckboxes ? 'Hide Selection' : 'Select Multiple' }}
       </button>
@@ -138,11 +139,12 @@
       <!-- Select All Button (only visible when checkboxes are shown) -->
       <button
         *ngIf="showCheckboxes"
-        class="ml-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+        class="w-full ml-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 flex items-center justify-center"
         (click)="selectAllContacts()">
         Select All
       </button>
     </div>
+
   </div>
 
 
